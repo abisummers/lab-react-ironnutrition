@@ -3,42 +3,53 @@ import "./App.css";
 import foods from "./foods.json";
 import FoodList from "./FoodList";
 
+const normalize = str => str.toLocaleLowerCase();
+
+const normalizedFoods = foods.map(food => ({
+  ...food,
+  _normalized: normalize(food.name)
+}));
+
 class App extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      foods: foods
+      foods,
+      query: ""
     };
   }
 
-  searchFood(event) {
-    let userInput = event.target.value;
+  searchFood = event => {
+    const userInput = event.target.value;
 
-    let filteredArray = foods.filter((el, i) => {
-      return el.name.indexOf(userInput) !== -1;
-    });
-    console.log(filteredArray);
+    const filteredArray = normalizedFoods.filter(food =>
+      food._normalized.includes(normalize(userInput))
+    );
 
     this.setState({
-      foods: filteredArray
+      foods: filteredArray,
+      query: userInput
     });
-  }
+  };
 
   render() {
-    const { foods } = this.state;
-    const foodArray = foods.map((el, index) => {
-      return <FoodList oneFood={el} />;
-    });
+    const { foods, query } = this.state;
+    const foodArray = foods.map(el => (
+      <FoodList food={el} key={el.name} />
+    ));
 
     return (
       <div>
-        (
         <div className="field">
-          <label className="label">Name</label>
+          <label className="label" htmlFor="search-input">
+            Name
+          </label>
           <div className="control">
             <input
-              onChange={event => this.searchFood(event)}
+              id="search-input"
+              onChange={this.searchFood}
+              value={query}
               className="input"
               type="text"
               placeholder="Text input"

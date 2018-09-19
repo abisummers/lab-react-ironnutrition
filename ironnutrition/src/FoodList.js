@@ -1,12 +1,15 @@
 import React from "react";
-import foods from "./foods.json";
 
 class FoodList extends React.Component {
-  constructor(props) {
-    super(props);
-  }
   render() {
-    const { oneFood } = this.props;
+    const {
+      name,
+      calories,
+      image,
+      quantity
+    } = this.props.food;
+
+    console.log(this.state);
 
     return (
       <section>
@@ -14,14 +17,14 @@ class FoodList extends React.Component {
           <article className="media">
             <div className="media-left">
               <figure className="image is-64x64">
-                <img src={oneFood.image} />
+                <img src={image} />
               </figure>
             </div>
             <div className="media-content">
               <div className="content">
                 <p>
-                  <strong>{oneFood.name}</strong> <br />
-                  <small>{oneFood.calories}</small>
+                  <strong>{name}</strong> <br />
+                  <small>{calories}</small>
                 </p>
               </div>
             </div>
@@ -31,11 +34,13 @@ class FoodList extends React.Component {
                   <input
                     className="input"
                     type="number"
-                    value={oneFood.quantity}
+                    value={quantity}
                   />
                 </div>
                 <div className="control">
-                  <button className="button is-info">+</button>
+                  <button className="button is-info">
+                    +
+                  </button>
                 </div>
               </div>
             </div>
